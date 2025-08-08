@@ -1,14 +1,9 @@
-const http = require('http');
 const WebSocket = require('ws');
 
+// Use Railway-assigned port or default to 3000
 const PORT = process.env.PORT || 3000;
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200);
-  res.end('WebRTC signaling server is running');
-});
-
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ port: PORT });
 
 wss.on('connection', function connection(ws) {
   console.log('New client connected');
@@ -28,6 +23,4 @@ wss.on('connection', function connection(ws) {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Signaling server is running on port ${PORT}`);
-});
+console.log(`Signaling server is running on ws://localhost:${PORT}`);
