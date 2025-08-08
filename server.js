@@ -1,15 +1,9 @@
-const fs = require('fs');
-const http = require('http');
 const WebSocket = require('ws');
 
-// Use environment PORT for Railway, fallback to 3000 locally
+// Use the Railway-assigned port or fallback to 3000
 const PORT = process.env.PORT || 3000;
 
-// Create HTTP server
-const server = http.createServer();
-
-// Attach WebSocket server to HTTP
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ port: PORT });
 
 wss.on('connection', function connection(ws) {
   console.log('New client connected');
@@ -29,7 +23,4 @@ wss.on('connection', function connection(ws) {
   });
 });
 
-// Start HTTP server (which wss piggybacks on)
-server.listen(PORT, () => {
-  console.log(` Signaling server is running on ws://localhost:${PORT}`);
-});
+console.log(`Signaling server is running on ws://localhost:${PORT}`);
