@@ -1,7 +1,14 @@
+const http = require('http');
 const WebSocket = require('ws');
 
-const PORT = process.env.PORT || 3000; // 
-const wss = new WebSocket.Server({ port: PORT });
+const PORT = process.env.PORT || 3000;
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200);
+  res.end('WebRTC signaling server is running');
+});
+
+const wss = new WebSocket.Server({ server });
 
 wss.on('connection', function connection(ws) {
   console.log('New client connected');
@@ -21,4 +28,6 @@ wss.on('connection', function connection(ws) {
   });
 });
 
-console.log(`Signaling server is running on ws://localhost:${PORT}`);
+server.listen(PORT, () => {
+  console.log(`Signaling server is running on port ${PORT}`);
+});
